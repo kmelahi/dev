@@ -3,6 +3,7 @@ pipeline{
 	agent any
 	environment{
 		RELEASE='20.4'
+		LOG_LEVEL='INFO'
 	}
 	
 	
@@ -12,7 +13,7 @@ pipeline{
 			stage('Build'){
 				agent any
 				environment {
-					LOG_LEVEL='INFO'
+					echo "Building release with log level ${LOG_LEVEL}.."
 				}
 				
 				steps{
