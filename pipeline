@@ -1,33 +1,43 @@
-pipeline{
-
-	agent any
-	environment{
-		RELEASE='20.4'
-		
-	}
-	
-	
-	stages{
-	
-	
-			stage('Build'){
-				agent any
-				environment {
-					echo "Building release with log level.."
-				}
-				
-				steps{
-					echo "Building release ${RELEASE} with log level"
-				}
-			}
-		
-			stage('Test'){
-				steps{
-					echo "Testing. I can see release ${RELEASE}, but not log level..."
-				}
-			}
-	
-	
-		}
-
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                // Example: running a build command (e.g., Maven, Gradle, npm)
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Example: running unit tests
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                // Example: Deploy to a server or cloud platform
+                sh 'scp target/my-app.jar user@server:/path/to/deploy/'
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Cleaning up...'
+            // Example: Clean up resources or workspace
+            deleteDir()
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
 }
